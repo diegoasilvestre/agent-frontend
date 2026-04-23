@@ -129,6 +129,32 @@
         listarLojas();
         setInterval(checkStatus, 10000);
 
+        // Função para abrir o cadastro de nova loja
+async function abrirModalLoja() {
+    const nome = prompt("Nome da Loja:");
+    const numero = prompt("Número do WhatsApp (com DDI, ex: 5511999999999):");
+    
+    if (!nome || !numero) return;
+
+    try {
+        const res = await fetch(`${API_URL}/admin/lojas`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ nome, wa_id: numero })
+        });
+        
+        if (res.ok) {
+            alert("Loja criada com sucesso!");
+            listarLojas(); // Recarrega a lista
+        } else {
+            const err = await res.json();
+            alert("Erro: " + (err.error || "Falha ao criar loja"));
+        }
+    } catch (e) {
+        alert("Erro na conexão: " + e.message);
+    }
+}
+
     </script>
 </body>
 </html>
